@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maison Céleste — Artisan Bakery & Pâtisserie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#faf6ef;--cream2:#f3ead8;--espresso:#1a0f05;--espresso2:#2c1f0e;
+  --gold:#c9a96e;--gold2:#a07840;--rose:#c4856a;--rose2:#e8c4b0;
+  --text:#2c1f0e;--dim:rgba(44,31,14,0.5);--faint:rgba(44,31,14,0.28);
+  --border:rgba(44,31,14,0.1);
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--text);font-family:'Jost',sans-serif;font-size:15px;overflow-x:hidden}
+
+/* ── NAVBAR ─────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;transition:all .5s}
+nav.scrolled{background:rgba(26,15,5,0.95);padding:16px 60px;backdrop-filter:blur(12px)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:#fff;letter-spacing:5px;text-decoration:none}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{font-size:13px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.65);text-decoration:none;transition:color .3s;font-weight:400}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--espresso);background:var(--gold);padding:10px 22px;border-radius:2px;text-decoration:none;font-weight:500;transition:opacity .2s}
+.nav-cta:hover{opacity:.85}
+
+/* ── HERO ────────────────────────────────────────────── */
+#hero{height:100vh;background:var(--espresso);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(201,169,110,0.18) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(196,133,106,0.12) 0%,transparent 50%)}
+.hero-grain{position:absolute;inset:0;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")}
+.hero-deco{position:absolute;font-size:240px;opacity:.03;user-select:none;pointer-events:none;line-height:1}
+.hero-deco-1{top:-40px;left:-60px}
+.hero-deco-2{bottom:-60px;right:-40px}
+.hero-content{position:relative;text-align:center;padding:0 20px}
+.hero-eyebrow{font-size:12px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:28px;font-weight:400;display:flex;align-items:center;justify-content:center;gap:16px}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:40px;height:0.5px;background:var(--gold);opacity:.6}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(72px,10vw,128px);font-weight:300;color:#fff;line-height:.9;letter-spacing:-2px;margin-bottom:8px}
+.hero-title em{color:var(--gold);font-style:italic}
+.hero-subtitle{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,26px);color:rgba(255,255,255,0.45);letter-spacing:8px;font-weight:300;margin-bottom:48px;text-transform:uppercase}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:20px}
+.btn-primary{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--espresso);background:var(--gold);padding:16px 36px;border-radius:2px;text-decoration:none;font-weight:500;transition:all .3s}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-outline{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.25);padding:16px 36px;border-radius:2px;text-decoration:none;font-weight:400;transition:all .3s}
+.btn-outline:hover{color:#fff;border-color:rgba(255,255,255,0.5)}
+.hero-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,0.25);font-size:11px;letter-spacing:3px;text-transform:uppercase}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollLine 2s infinite}
+@keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(1);opacity:0}}
+
+/* ── FADE IN ─────────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ── SECTION SHARED ──────────────────────────────────── */
+section{padding:110px 60px}
+.eyebrow{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--gold2);margin-bottom:16px;font-weight:400}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,5vw,64px);font-weight:400;color:var(--espresso);line-height:1;margin-bottom:0}
+.section-title em{font-style:italic;color:var(--rose)}
+.divider-ornament{display:flex;align-items:center;gap:16px;margin:28px 0}
+.divider-ornament::before,.divider-ornament::after{content:'';flex:1;height:0.5px;background:var(--border)}
+.divider-ornament span{font-size:18px;color:var(--gold);opacity:.6}
+
+/* ── ABOUT ───────────────────────────────────────────── */
+#about{background:#fff;padding:110px 60px}
+.about-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.about-text .eyebrow{margin-bottom:12px}
+.about-text p{font-size:16px;line-height:1.85;color:var(--dim);margin-top:20px;font-weight:300}
+.about-text p strong{color:var(--text);font-weight:500}
+.about-quote{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;color:var(--espresso2);line-height:1.4;margin-top:36px;padding-left:20px;border-left:2px solid var(--gold)}
+.about-visual{position:relative}
+.about-badge{background:var(--espresso);color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:3px;padding:6px 16px;border-radius:1px;text-transform:uppercase;display:inline-block}
+.about-accent{display:flex;align-items:center;gap:24px;background:var(--cream2);border-radius:4px;padding:26px 32px;margin-bottom:24px;border:1px solid rgba(44,31,14,0.07)}
+.about-accent-icon{font-size:64px;line-height:1;flex-shrink:0;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.08))}
+.about-accent-info{display:flex;flex-direction:column;gap:8px}
+.about-accent-info p{font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(44,31,14,0.5);font-style:italic;margin:0;line-height:1.5}
+.about-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(44,31,14,0.1)}
+.about-stat{background:#fff;padding:28px 24px;text-align:center}
+.about-stat-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:400;color:var(--espresso);line-height:1}
+.about-stat-lbl{font-size:12px;letter-spacing:2px;color:var(--faint);text-transform:uppercase;margin-top:6px}
+
+/* ── MENU ────────────────────────────────────────────── */
+#menu{background:var(--espresso);padding:110px 60px;position:relative;overflow:hidden}
+#menu::before{content:'MENU';position:absolute;font-family:'Cormorant Garamond',serif;font-size:280px;font-weight:700;color:rgba(255,255,255,0.02);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:-10px}
+.menu-inner{max-width:1200px;margin:0 auto}
+.menu-header{text-align:center;margin-bottom:64px}
+.menu-header .section-title{color:#fff}
+.menu-header .eyebrow{color:var(--gold)}
+.menu-tabs{display:flex;justify-content:center;gap:0;margin-top:32px;border:0.5px solid rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;width:fit-content;margin-left:auto;margin-right:auto}
+.menu-tab{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.38);padding:12px 24px;cursor:pointer;transition:all .2s;border-right:0.5px solid rgba(255,255,255,0.1)}
+.menu-tab:last-child{border-right:none}
+.menu-tab.active{background:var(--gold);color:var(--espresso);font-weight:500}
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.06);margin-top:2px}
+.menu-item{background:rgba(26,15,5,0.8);padding:32px;cursor:default;transition:background .3s;position:relative;overflow:hidden}
+.menu-item:hover{background:rgba(44,26,8,0.9)}
+.menu-item::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(201,169,110,0.3),transparent);opacity:0;transition:opacity .3s}
+.menu-item:hover::before{opacity:1}
+.item-icon{font-size:36px;margin-bottom:16px;display:block;line-height:1}
+.item-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:#fff;margin-bottom:8px}
+.item-desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;font-weight:300;margin-bottom:20px}
+.item-footer{display:flex;align-items:center;justify-content:space-between}
+.item-price{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);font-weight:400}
+.item-tag{font-size:11px;letter-spacing:1.5px;color:rgba(255,255,255,0.45);text-transform:uppercase;border:0.5px solid rgba(255,255,255,0.12);padding:3px 9px;border-radius:1px}
+.item-tag.sig{color:var(--gold);border-color:rgba(201,169,110,0.3)}
+.menu-panel{display:none}
+.menu-panel.active{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.06)}
+
+/* ── SPECIALTIES ─────────────────────────────────────── */
+#specialties{background:var(--cream);padding:110px 60px}
+.spec-inner{max-width:1200px;margin:0 auto}
+.spec-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:64px}
+.spec-header p{font-size:15px;color:var(--dim);line-height:1.8;font-weight:300;align-self:end}
+.spec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.spec-card{background:#fff;border-radius:4px;overflow:hidden;transition:transform .4s,box-shadow .4s;cursor:default}
+.spec-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(44,31,14,0.12)}
+.spec-img{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:64px;position:relative;overflow:hidden}
+.spec-img-bg{position:absolute;inset:0;transition:transform .5s}
+.spec-card:hover .spec-img-bg{transform:scale(1.05)}
+.spec-emoji{position:relative;z-index:1;font-size:60px;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.15))}
+.spec-body{padding:22px 20px}
+.spec-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--espresso);margin-bottom:6px}
+.spec-desc{font-size:14px;color:var(--dim);line-height:1.7;font-weight:300;margin-bottom:14px}
+.spec-price{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold2)}
+.spec-badge{display:inline-block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;background:var(--rose2);color:var(--rose);padding:3px 9px;border-radius:1px;margin-left:8px}
+
+/* ── PROCESS ─────────────────────────────────────────── */
+#process{background:var(--espresso2);padding:90px 60px}
+.process-inner{max-width:1100px;margin:0 auto;text-align:center}
+.process-inner .section-title{color:#fff;margin-bottom:10px}
+.process-inner .eyebrow{color:var(--gold)}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:60px;position:relative}
+.process-steps::before{content:'';position:absolute;top:28px;left:calc(12.5%);right:calc(12.5%);height:0.5px;background:linear-gradient(to right,transparent,rgba(201,169,110,0.3),rgba(201,169,110,0.3),transparent)}
+.step{padding:0 20px;text-align:center}
+.step-num{width:56px;height:56px;border-radius:50%;border:0.5px solid rgba(201,169,110,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);position:relative;background:var(--espresso2)}
+.step-icon{font-size:22px}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:#fff;margin-bottom:8px;font-weight:500}
+.step-desc{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.7;font-weight:300}
+
+/* ── TESTIMONIALS ────────────────────────────────────── */
+#testimonials{background:#fff;padding:110px 60px}
+.test-inner{max-width:1200px;margin:0 auto}
+.test-header{text-align:center;margin-bottom:64px}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.test-card{background:var(--cream);border-radius:4px;padding:36px;position:relative;overflow:hidden}
+.test-card::before{content:'\201C';font-family:'Cormorant Garamond',serif;font-size:120px;color:var(--gold);opacity:.12;position:absolute;top:-10px;left:16px;line-height:1}
+.test-text{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--espresso2);line-height:1.6;font-style:italic;position:relative;margin-bottom:24px}
+.test-author{display:flex;align-items:center;gap:12px}
+.test-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;color:#fff;flex-shrink:0}
+.test-name{font-size:15px;font-weight:500;color:var(--espresso)}
+.test-stars{font-size:13px;color:var(--gold);letter-spacing:2px}
+
+/* ── VISIT ───────────────────────────────────────────── */
+#visit{background:var(--cream2);padding:110px 60px}
+.visit-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:80px;align-items:start}
+.visit-map-iframe{width:100%;aspect-ratio:4/3;border:none;border-radius:6px;display:block;box-shadow:0 8px 32px rgba(0,0,0,0.12)}
+.hours-title{font-family:'Cormorant Garamond',serif;font-size:38px;color:var(--espresso);margin-bottom:8px;font-weight:400}
+.hours-list{margin-top:28px;display:flex;flex-direction:column;gap:0;border-top:0.5px solid var(--border)}
+.hours-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:0.5px solid var(--border)}
+.hours-day{font-size:15px;color:var(--dim);font-weight:400}
+.hours-time{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--espresso)}
+.hours-closed{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--faint);font-style:italic}
+.visit-info{margin-top:32px;display:flex;flex-direction:column;gap:14px}
+.visit-info-row{display:flex;gap:12px;align-items:flex-start}
+.visit-info-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.visit-info-text{font-size:15px;color:var(--dim);line-height:1.6}
+.visit-info-text strong{color:var(--text);display:block;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;font-weight:500}
+
+/* ── ORDER BANNER ────────────────────────────────────── */
+#order{background:var(--gold);padding:80px 60px;text-align:center;position:relative;overflow:hidden}
+#order::before{content:'✦';font-size:300px;color:rgba(26,15,5,0.04);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;font-family:serif}
+.order-inner{position:relative;max-width:700px;margin:0 auto}
+.order-eyebrow{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:rgba(26,15,5,0.45);margin-bottom:16px}
+.order-title{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,6vw,70px);font-weight:400;color:var(--espresso);line-height:1;margin-bottom:20px}
+.order-sub{font-size:16px;color:rgba(26,15,5,0.6);font-weight:300;margin-bottom:40px;line-height:1.7}
+.btn-dark{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#fff;background:var(--espresso);padding:18px 44px;border-radius:2px;text-decoration:none;font-weight:500;transition:all .3s;display:inline-block}
+.btn-dark:hover{background:#000;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+
+/* ── FOOTER ──────────────────────────────────────────── */
+footer{background:var(--espresso);padding:60px 60px 36px;color:rgba(255,255,255,0.45)}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;margin-bottom:52px}
+.footer-brand .brand-name{font-family:'Cormorant Garamond',serif;font-size:26px;color:#fff;letter-spacing:5px;margin-bottom:10px}
+.footer-brand .brand-name span{color:var(--gold)}
+.footer-brand p{font-size:14px;line-height:1.8;color:rgba(255,255,255,0.45);font-weight:300;margin-top:12px}
+.footer-col h4{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:18px;font-weight:500}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col ul li a{font-size:14px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color .2s;font-weight:300}
+.footer-col ul li a:hover{color:var(--gold)}
+.footer-bottom{padding-top:28px;border-top:0.5px solid rgba(255,255,255,0.07);display:flex;justify-content:space-between;align-items:center}
+.footer-bottom p{font-size:13px;color:rgba(255,255,255,0.35);letter-spacing:.5px}
+.footer-social{display:flex;gap:18px}
+.footer-social a{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.28);text-decoration:none;transition:color .2s}
+.footer-social a:hover{color:var(--gold)}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(max-width:900px){
+  section,nav{padding-left:28px;padding-right:28px}
+  nav.scrolled{padding:14px 28px}
+  .about-inner,.visit-inner{grid-template-columns:1fr}
+  .spec-grid{grid-template-columns:1fr 1fr}
+  .test-grid{grid-template-columns:1fr}
+  .process-steps{grid-template-columns:1fr 1fr}
+  .menu-panel.active{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .spec-header{grid-template-columns:1fr}
+  nav .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">MAISON <span>CÉLESTE</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#specialties">Specialties</a></li>
+    <li><a href="#visit">Visit Us</a></li>
+  </ul>
+  <a href="#order" class="nav-cta">Order Now</a>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-deco hero-deco-1">🥐</div>
+  <div class="hero-deco hero-deco-2">🍞</div>
+  <div class="hero-content">
+    <div class="hero-eyebrow reveal">Artisan Bakery &amp; Pâtisserie · Est. 2014</div>
+    <div class="hero-title reveal reveal-delay-1">MAISON<br><em>Céleste</em></div>
+    <div class="hero-subtitle reveal reveal-delay-2">Hamilton · Ontario</div>
+    <div class="hero-actions reveal reveal-delay-3">
+      <a href="#menu" class="btn-primary">Explore Menu</a>
+      <a href="#order" class="btn-outline">Order Online</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ── ABOUT ─────────────────────────────────────────────── -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <div class="eyebrow reveal">Our Story</div>
+      <h2 class="section-title reveal reveal-delay-1">Crafted with<br><em>love &amp; patience</em></h2>
+      <div class="divider-ornament reveal reveal-delay-2"><span>✦</span></div>
+      <p class="reveal reveal-delay-2">At Maison Céleste, every loaf, croissant, and pastry begins long before sunrise. We use <strong>stone-milled heritage flours</strong>, wild-caught sourdough cultures, and seasonal ingredients sourced directly from Ontario farms.</p>
+      <p class="reveal reveal-delay-3">Our recipes draw from three generations of French boulangerie tradition — adapted, refined, and baked fresh every morning with the care of a family kitchen and the discipline of a professional kitchen.</p>
+      <blockquote class="about-quote reveal reveal-delay-4">"Good bread is the most fundamentally satisfying of all foods."<br><small style="font-size:15px;color:var(--faint);font-family:'Jost',sans-serif;font-style:normal;letter-spacing:1px">— James Beard</small></blockquote>
+    </div>
+    <div class="about-visual reveal reveal-delay-2">
+      <div class="about-accent">
+        <div class="about-accent-icon">🥖</div>
+        <div class="about-accent-info">
+          <div class="about-badge">Baked Fresh Daily</div>
+          <p>Stone-milled heritage flour · Wild sourdough cultures</p>
+          <p>Every morning from 5:00 AM · Est. 2014</p>
+        </div>
+      </div>
+      <div class="about-stat-grid reveal reveal-delay-3">
+        <div class="about-stat"><div class="about-stat-num">10+</div><div class="about-stat-lbl">Years Baking</div></div>
+        <div class="about-stat"><div class="about-stat-num">40+</div><div class="about-stat-lbl">Menu Items</div></div>
+        <div class="about-stat"><div class="about-stat-num">100%</div><div class="about-stat-lbl">Natural Ingredients</div></div>
+        <div class="about-stat"><div class="about-stat-num">5★</div><div class="about-stat-lbl">Google Rating</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MENU ──────────────────────────────────────────────── -->
+<section id="menu">
+  <div class="menu-inner">
+    <div class="menu-header reveal">
+      <div class="eyebrow">What We Bake</div>
+      <h2 class="section-title">Our <em>Menu</em></h2>
+      <div style="margin-top:14px;font-size:14px;color:rgba(255,255,255,0.32);font-weight:300">All items baked fresh daily — available until sold out</div>
+      <div class="menu-tabs">
+        <div class="menu-tab active" onclick="switchMenu('breads',this)">Breads</div>
+        <div class="menu-tab" onclick="switchMenu('pastries',this)">Pastries</div>
+        <div class="menu-tab" onclick="switchMenu('cakes',this)">Cakes</div>
+        <div class="menu-tab" onclick="switchMenu('drinks',this)">Drinks</div>
+      </div>
+    </div>
+
+    <div id="menu-breads" class="menu-panel active reveal">
+      <div class="menu-item"><span class="item-icon">🍞</span><div class="item-name">Country Sourdough</div><div class="item-desc">Slow-fermented 48-hour sourdough with a crackling crust and open, chewy crumb. Our most beloved loaf.</div><div class="item-footer"><div class="item-price">$9</div><span class="item-tag sig">Signature</span></div></div>
+      <div class="menu-item"><span class="item-icon">🥖</span><div class="item-name">Classic Baguette</div><div class="item-desc">Thin, golden crust with a light, airy interior. Made with T65 French flour and a 24-hour cold ferment.</div><div class="item-footer"><div class="item-price">$4.50</div><span class="item-tag">Daily</span></div></div>
+      <div class="menu-item"><span class="item-icon">🌾</span><div class="item-name">Seeded Rye Loaf</div><div class="item-desc">Dark rye with caraway, sunflower and flaxseed. Dense, earthy, deeply satisfying. Perfect toasted.</div><div class="item-footer"><div class="item-price">$11</div><span class="item-tag">Weekly</span></div></div>
+      <div class="menu-item"><span class="item-icon">🫓</span><div class="item-name">Rosemary Focaccia</div><div class="item-desc">Dimpled, oil-kissed focaccia with fresh rosemary, fleur de sel, and a hint of roasted garlic.</div><div class="item-footer"><div class="item-price">$7</div><span class="item-tag sig">Popular</span></div></div>
+      <div class="menu-item"><span class="item-icon">🍞</span><div class="item-name">Brioche Loaf</div><div class="item-desc">Butter-rich, soft and golden. Ideal for French toast or served alongside a cheese board at dinner.</div><div class="item-footer"><div class="item-price">$12</div><span class="item-tag sig">Signature</span></div></div>
+      <div class="menu-item"><span class="item-icon">🧀</span><div class="item-name">Olive &amp; Herb Batard</div><div class="item-desc">Sourdough batard studded with Kalamata olives, sundried tomato, and herbes de Provence.</div><div class="item-footer"><div class="item-price">$13</div><span class="item-tag">Seasonal</span></div></div>
+    </div>
+
+    <div id="menu-pastries" class="menu-panel">
+      <div class="menu-item"><span class="item-icon">🥐</span><div class="item-name">Butter Croissant</div><div class="item-desc">72-hour laminated dough with 27 flaky layers of pure Normandy butter. Shatters on first bite.</div><div class="item-footer"><div class="item-price">$4.50</div><span class="item-tag sig">Signature</span></div></div>
+      <div class="menu-item"><span class="item-icon">🍫</span><div class="item-name">Pain au Chocolat</div><div class="item-desc">Two batons of 70% Valrhona dark chocolate nestled inside our signature croissant dough.</div><div class="item-footer"><div class="item-price">$5</div><span class="item-tag sig">Popular</span></div></div>
+      <div class="menu-item"><span class="item-icon">🌸</span><div class="item-name">Rose &amp; Almond Danish</div><div class="item-desc">Flaky pastry filled with frangipane, topped with rosewater cream and fresh raspberries.</div><div class="item-footer"><div class="item-price">$6</div><span class="item-tag">Seasonal</span></div></div>
+      <div class="menu-item"><span class="item-icon">🍋</span><div class="item-name">Lemon Curd Tart</div><div class="item-desc">Buttery pâte sablée shell with silky Italian meringue and sharp, bright lemon curd.</div><div class="item-footer"><div class="item-price">$7</div><span class="item-tag sig">Signature</span></div></div>
+      <div class="menu-item"><span class="item-icon">🎂</span><div class="item-name">Canelé Bordelais</div><div class="item-desc">Dark caramelised crust, soft custard interior with vanilla and rum. Made in copper moulds overnight.</div><div class="item-footer"><div class="item-price">$3.50</div><span class="item-tag">Daily</span></div></div>
+      <div class="menu-item"><span class="item-icon">🟤</span><div class="item-name">Hazelnut Financier</div><div class="item-desc">Brown butter almond cake with toasted hazelnut and a single salted dark chocolate chip at the centre.</div><div class="item-footer"><div class="item-price">$4</div><span class="item-tag">Daily</span></div></div>
+    </div>
+
+    <div id="menu-cakes" class="menu-panel">
+      <div class="menu-item"><span class="item-icon">🎂</span><div class="item-name">Paris-Brest</div><div class="item-desc">Choux ring filled with praline mousseline cream and topped with caramelised hazelnuts. A French classic.</div><div class="item-footer"><div class="item-price">$28</div><span class="item-tag sig">Signature</span></div></div>
+      <div class="menu-item"><span class="item-icon">🍰</span><div class="item-name">Tarte Tatin</div><div class="item-desc">Upside-down caramelised apple tart on rough puff pastry. Served warm with crème fraîche.</div><div class="item-footer"><div class="item-price">$32</div><span class="item-tag">Seasonal</span></div></div>
+      <div class="menu-item"><span class="item-icon">🫐</span><div class="item-name">Blueberry Basque Cheesecake</div><div class="item-desc">Deeply burnt exterior, creamy molten interior, with a blueberry compote swirl throughout.</div><div class="item-footer"><div class="item-price">$38</div><span class="item-tag sig">Popular</span></div></div>
+      <div class="menu-item"><span class="item-icon">🍫</span><div class="item-name">Opéra Cake</div><div class="item-desc">Alternating layers of joconde sponge, coffee buttercream and dark chocolate ganache. Eight layers, one bite.</div><div class="item-footer"><div class="item-price">$42</div><span class="item-tag sig">Signature</span></div></div>
+      <div class="menu-item"><span class="item-icon">🌹</span><div class="item-name">Fraisier</div><div class="item-desc">Fresh strawberries set in mousseline cream on genoise — a springtime classic, available May–Aug.</div><div class="item-footer"><div class="item-price">$36</div><span class="item-tag">Seasonal</span></div></div>
+      <div class="menu-item"><span class="item-icon">🍋</span><div class="item-name">Custom Celebration Cake</div><div class="item-desc">Bespoke cakes for any occasion — designed with you, minimum 72 hours notice required.</div><div class="item-footer"><div class="item-price">From $85</div><span class="item-tag">Order Ahead</span></div></div>
+    </div>
+
+    <div id="menu-drinks" class="menu-panel">
+      <div class="menu-item"><span class="item-icon">☕</span><div class="item-name">Café Crème</div><div class="item-desc">Double espresso finished with perfectly steamed whole milk. Sourced from Pilot Coffee Roasters, Toronto.</div><div class="item-footer"><div class="item-price">$5</div><span class="item-tag">Daily</span></div></div>
+      <div class="menu-item"><span class="item-icon">🍵</span><div class="item-name">Loose Leaf Tea</div><div class="item-desc">Curated selection: Earl Grey, Chamomile, Darjeeling, and seasonal house blend. Served with warm honey.</div><div class="item-footer"><div class="item-price">$4.50</div><span class="item-tag">Daily</span></div></div>
+      <div class="menu-item"><span class="item-icon">🥛</span><div class="item-name">Cardamom Latte</div><div class="item-desc">Espresso with house-made cardamom syrup and foamed oat milk. Warm and gently spiced.</div><div class="item-footer"><div class="item-price">$6.50</div><span class="item-tag sig">Popular</span></div></div>
+      <div class="menu-item"><span class="item-icon">🧃</span><div class="item-name">Freshly Pressed Juice</div><div class="item-desc">Daily pressed: apple & ginger, carrot & turmeric, or orange & passion fruit. Ask what's fresh today.</div><div class="item-footer"><div class="item-price">$7</div><span class="item-tag">Seasonal</span></div></div>
+      <div class="menu-item"><span class="item-icon">🍫</span><div class="item-name">Parisian Hot Chocolate</div><div class="item-desc">Thick drinking chocolate made with 70% Valrhona cocoa and whole milk. Rich, not sweet.</div><div class="item-footer"><div class="item-price">$6</div><span class="item-tag sig">Signature</span></div></div>
+      <div class="menu-item"><span class="item-icon">🌿</span><div class="item-name">Elderflower Lemonade</div><div class="item-desc">House-made elderflower cordial with freshly squeezed lemon, sparkling water, and a sprig of mint.</div><div class="item-footer"><div class="item-price">$5.50</div><span class="item-tag">Seasonal</span></div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SPECIALTIES ────────────────────────────────────────── -->
+<section id="specialties">
+  <div class="spec-inner">
+    <div class="spec-header">
+      <div>
+        <div class="eyebrow reveal">Must Try</div>
+        <h2 class="section-title reveal reveal-delay-1">Our <em>Signatures</em></h2>
+      </div>
+      <p class="reveal reveal-delay-2">These are the items our regulars come back for every week — lovingly made with techniques refined over a decade of baking in Hamilton.</p>
+    </div>
+    <div class="spec-grid">
+      <div class="spec-card reveal">
+        <div class="spec-img"><div class="spec-img-bg" style="background:linear-gradient(135deg,#f5e8d0,#e8d0a8)"></div><span class="spec-emoji">🥐</span></div>
+        <div class="spec-body"><div class="spec-name">The Celestial Croissant<span class="spec-badge">Bestseller</span></div><div class="spec-desc">72-hour laminated, 27 layers, Normandy butter. The croissant that started it all.</div><div class="spec-price">$4.50</div></div>
+      </div>
+      <div class="spec-card reveal reveal-delay-1">
+        <div class="spec-img"><div class="spec-img-bg" style="background:linear-gradient(135deg,#f0e0d0,#ddc4a8)"></div><span class="spec-emoji">🍞</span></div>
+        <div class="spec-body"><div class="spec-name">Heritage Sourdough<span class="spec-badge">Daily</span></div><div class="spec-desc">48-hour cold proof, stone-milled flour, our 10-year-old starter. Available from 7 AM.</div><div class="spec-price">$9</div></div>
+      </div>
+      <div class="spec-card reveal reveal-delay-2">
+        <div class="spec-img"><div class="spec-img-bg" style="background:linear-gradient(135deg,#f8e8e0,#e8c8b8)"></div><span class="spec-emoji">🎂</span></div>
+        <div class="spec-body"><div class="spec-name">Canelé Bordelais<span class="spec-badge">Signature</span></div><div class="spec-desc">Copper-moulded, vanilla & rum custard, caramelised shell. Made in small batches every morning.</div><div class="spec-price">$3.50</div></div>
+      </div>
+      <div class="spec-card reveal reveal-delay-3">
+        <div class="spec-img"><div class="spec-img-bg" style="background:linear-gradient(135deg,#f5f0e0,#e8dfc0)"></div><span class="spec-emoji">🍋</span></div>
+        <div class="spec-body"><div class="spec-name">Lemon Meringue Tart<span class="spec-badge">Popular</span></div><div class="spec-desc">Pâte sablée shell, sharp lemon curd, torched Italian meringue. A customer favourite since day one.</div><div class="spec-price">$7</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESS ────────────────────────────────────────────── -->
+<section id="process">
+  <div class="process-inner">
+    <div class="eyebrow reveal">How We Bake</div>
+    <h2 class="section-title reveal reveal-delay-1">From <em>starter to shelf</em></h2>
+    <div class="process-steps">
+      <div class="step reveal">
+        <div class="step-num"><span class="step-icon">🌾</span></div>
+        <div class="step-title">Source</div>
+        <div class="step-desc">Stone-milled heritage flours and seasonal produce sourced from Ontario farms weekly.</div>
+      </div>
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num"><span class="step-icon">🥣</span></div>
+        <div class="step-title">Mix & Ferment</div>
+        <div class="step-desc">Long cold ferments of 24–72 hours develop deep flavour and natural digestibility.</div>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num"><span class="step-icon">🔥</span></div>
+        <div class="step-title">Bake</div>
+        <div class="step-desc">Deck ovens with steam injection, starting at 5 AM, every single morning without exception.</div>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num"><span class="step-icon">🛍️</span></div>
+        <div class="step-title">Fresh to You</div>
+        <div class="step-desc">On the shelf by 7 AM. What doesn't sell is donated to local shelters by close of day.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ───────────────────────────────────────── -->
+<section id="testimonials">
+  <div class="test-inner">
+    <div class="test-header reveal">
+      <div class="eyebrow">What Guests Say</div>
+      <h2 class="section-title">Loved by <em>Hamilton</em></h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <div class="test-text">"The croissant changed my life. I've been to Paris three times and this is genuinely as good as anything I've had on Rue de Rivoli."</div>
+        <div class="test-author"><div class="test-av" style="background:#8b5e3c">SM</div><div><div class="test-name">Sophie M.</div><div class="test-stars">★★★★★</div></div></div>
+      </div>
+      <div class="test-card reveal reveal-delay-1">
+        <div class="test-text">"We ordered a custom fraisier for our wedding. It was so beautiful people didn't want to cut it. And then they did — and it was even better than it looked."</div>
+        <div class="test-author"><div class="test-av" style="background:#4a6b8a">JR</div><div><div class="test-name">James &amp; Rachel K.</div><div class="test-stars">★★★★★</div></div></div>
+      </div>
+      <div class="test-card reveal reveal-delay-2">
+        <div class="test-text">"I walk 20 minutes every Saturday morning specifically for the sourdough and a canelé. My weekend doesn't start without it. Worth every step."</div>
+        <div class="test-author"><div class="test-av" style="background:#5a7a4a">TN</div><div><div class="test-name">Thomas N.</div><div class="test-stars">★★★★★</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── VISIT ──────────────────────────────────────────────── -->
+<section id="visit">
+  <div class="visit-inner">
+    <div>
+      <div class="eyebrow reveal">Find Us</div>
+      <h2 class="section-title reveal reveal-delay-1">Come <em>Visit</em></h2>
+      <div class="divider-ornament reveal reveal-delay-2"><span>✦</span></div>
+      <iframe
+        class="visit-map-iframe reveal reveal-delay-2"
+        src="https://maps.google.com/maps?q=142+King+Street+East,+Hamilton,+Ontario,+Canada&output=embed&z=16"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+        title="Maison Céleste location"
+      ></iframe>
+    </div>
+    <div>
+      <div class="hours-title reveal">Opening<br><em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rose)">Hours</em></div>
+      <div class="hours-list reveal reveal-delay-1">
+        <div class="hours-row"><span class="hours-day">Monday</span><span class="hours-closed">Closed</span></div>
+        <div class="hours-row"><span class="hours-day">Tuesday – Friday</span><span class="hours-time">7:00 AM – 5:00 PM</span></div>
+        <div class="hours-row"><span class="hours-day">Saturday</span><span class="hours-time">7:00 AM – 4:00 PM</span></div>
+        <div class="hours-row"><span class="hours-day">Sunday</span><span class="hours-time">8:00 AM – 2:00 PM</span></div>
+      </div>
+      <div class="visit-info reveal reveal-delay-2">
+        <div class="visit-info-row"><span class="visit-info-icon">📞</span><div class="visit-info-text"><strong>Phone</strong>(905) 528 – 4241</div></div>
+        <div class="visit-info-row"><span class="visit-info-icon">✉️</span><div class="visit-info-text"><strong>Email</strong>hello@maisonces.ca</div></div>
+        <div class="visit-info-row"><span class="visit-info-icon">🅿️</span><div class="visit-info-text"><strong>Parking</strong>Free street parking on King St. Pay lot on Walnut, 2-min walk.</div></div>
+        <div class="visit-info-row"><span class="visit-info-icon">♿</span><div class="visit-info-text"><strong>Accessibility</strong>Fully accessible entrance and seating available.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ORDER BANNER ───────────────────────────────────────── -->
+<section id="order">
+  <div class="order-inner">
+    <div class="order-eyebrow reveal">Order Ahead</div>
+    <h2 class="order-title reveal reveal-delay-1">Reserve your<br><em style="font-style:italic">favourites</em></h2>
+    <p class="order-sub reveal reveal-delay-2">Pre-order by 8 PM the night before to guarantee your morning pick-up. Custom cakes require 72 hours notice. We also offer weekly bread subscriptions.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap" class="reveal reveal-delay-3">
+      <a href="mailto:hello@maisonces.ca" class="btn-dark">Order via Email</a>
+      <a href="tel:9055284241" style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--espresso);border:1.5px solid rgba(26,15,5,0.25);padding:18px 36px;border-radius:2px;text-decoration:none;font-weight:500;transition:all .3s;display:inline-block">Call Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand-name">MAISON <span>CÉLESTE</span></div>
+        <p>Artisan bakery &amp; pâtisserie in the heart of Hamilton, Ontario. Baked fresh every morning with love, patience, and the finest ingredients we can find.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="#menu">Breads &amp; Loaves</a></li>
+          <li><a href="#menu">Pastries</a></li>
+          <li><a href="#menu">Cakes &amp; Tarts</a></li>
+          <li><a href="#menu">Coffee &amp; Drinks</a></li>
+          <li><a href="#order">Custom Orders</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Visit</h4>
+        <ul>
+          <li><a href="#visit">142 King St E</a></li>
+          <li><a href="#visit">Hamilton, ON</a></li>
+          <li><a href="tel:9055284241">(905) 528-4241</a></li>
+          <li><a href="mailto:hello@maisonces.ca">hello@maisonces.ca</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">Newsletter</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Maison Céleste Bakery. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll
+var nav=document.getElementById('navbar');
+window.addEventListener('scroll',function(){
+  nav.classList.toggle('scrolled',window.scrollY>60);
+});
+
+// Menu tabs
+function switchMenu(id,el){
+  document.querySelectorAll('.menu-panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.menu-tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('menu-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// Reveal on scroll
+var observer=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');}});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(function(el){observer.observe(el);});
+
+// Trigger hero reveals immediately
+document.querySelectorAll('#hero .reveal').forEach(function(el){
+  setTimeout(function(){el.classList.add('visible');},300);
+});
+</script>
+</body>
+</html>
