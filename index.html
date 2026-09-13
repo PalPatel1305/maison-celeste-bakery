@@ -198,7 +198,17 @@ footer{background:var(--espresso);padding:60px 60px 36px;color:rgba(255,255,255,
 .footer-social a{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.28);text-decoration:none;transition:color .2s}
 .footer-social a:hover{color:var(--gold)}
 
+/* ── MOBILE NAV ──────────────────────────────────────── */
+.nav-toggle{display:none;background:none;border:none;color:#fff;font-size:24px;cursor:pointer;padding:6px;line-height:1}
+.nav-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:998}
+.nav-overlay.open{display:block}
+.mobile-nav{position:fixed;top:0;right:0;bottom:0;width:min(78vw,320px);background:var(--espresso);z-index:999;display:flex;flex-direction:column;padding:90px 32px 32px;gap:2px;box-shadow:-20px 0 60px rgba(0,0,0,.4);transform:translateX(100%);transition:transform .35s ease}
+.mobile-nav.open{transform:translateX(0)}
+.mobile-nav a{color:rgba(255,255,255,.75);text-decoration:none;font-size:15px;letter-spacing:2px;text-transform:uppercase;padding:16px 0;border-bottom:0.5px solid rgba(255,255,255,.08)}
+.mobile-nav a:hover{color:var(--gold)}
+
 /* ── RESPONSIVE ──────────────────────────────────────── */
+html,body{max-width:100%;overflow-x:hidden}
 @media(max-width:900px){
   section,nav{padding-left:28px;padding-right:28px}
   nav.scrolled{padding:14px 28px}
@@ -210,6 +220,20 @@ footer{background:var(--espresso);padding:60px 60px 36px;color:rgba(255,255,255,
   .footer-top{grid-template-columns:1fr 1fr}
   .spec-header{grid-template-columns:1fr}
   nav .nav-links{display:none}
+  .nav-toggle{display:block}
+}
+@media(max-width:600px){
+  section{padding-top:80px;padding-bottom:80px}
+  .hero-actions{flex-direction:column;width:100%;padding:0 24px;gap:14px}
+  .hero-actions a{width:100%;text-align:center}
+  .spec-grid,.menu-panel.active,.footer-top{grid-template-columns:1fr!important}
+  .process-steps{grid-template-columns:1fr;gap:36px}
+  .process-steps::before{display:none}
+  .menu-tabs{overflow-x:auto;max-width:100%;width:100%;justify-content:flex-start;-webkit-overflow-scrolling:touch}
+  .menu-tab{padding:10px 16px;white-space:nowrap}
+  .about-stat-num{font-size:36px}
+  .about-accent{flex-direction:column;text-align:center}
+  .footer-bottom{flex-direction:column;gap:14px;text-align:center}
 }
 </style>
 </head>
@@ -225,7 +249,17 @@ footer{background:var(--espresso);padding:60px 60px 36px;color:rgba(255,255,255,
     <li><a href="#visit">Visit Us</a></li>
   </ul>
   <a href="#order" class="nav-cta">Order Now</a>
+  <button class="nav-toggle" id="navToggle" onclick="toggleMobileNav()" aria-label="Toggle menu">☰</button>
 </nav>
+
+<div class="nav-overlay" id="navOverlay" onclick="toggleMobileNav(false)"></div>
+<div class="mobile-nav" id="mobileNav">
+  <a href="#about" onclick="toggleMobileNav(false)">Our Story</a>
+  <a href="#menu" onclick="toggleMobileNav(false)">Menu</a>
+  <a href="#specialties" onclick="toggleMobileNav(false)">Specialties</a>
+  <a href="#visit" onclick="toggleMobileNav(false)">Visit Us</a>
+  <a href="#order" onclick="toggleMobileNav(false)">Order Now</a>
+</div>
 
 <!-- ── HERO ─────────────────────────────────────────────── -->
 <section id="hero">
@@ -518,6 +552,14 @@ var nav=document.getElementById('navbar');
 window.addEventListener('scroll',function(){
   nav.classList.toggle('scrolled',window.scrollY>60);
 });
+
+// Mobile nav
+function toggleMobileNav(force){
+  var mn=document.getElementById('mobileNav'), ov=document.getElementById('navOverlay');
+  var open = typeof force === 'boolean' ? force : !mn.classList.contains('open');
+  mn.classList.toggle('open', open);
+  ov.classList.toggle('open', open);
+}
 
 // Menu tabs
 function switchMenu(id,el){
